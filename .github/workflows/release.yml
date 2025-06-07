@@ -46,6 +46,8 @@ jobs:
       - name: Create versio
         run: echo "BINARY_VERSION=1.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
       - name: Release to github
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "v$BINARY_VERSION" \
             -t "v$BINARY_VERSION" \

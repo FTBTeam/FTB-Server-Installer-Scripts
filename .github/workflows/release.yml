@@ -1,0 +1,55 @@
+name: Test & Release
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Test sh
+        run: ./install.sh
+      - name: Validate sh output
+        run: |
+          if [ ! -f ftb-server-installer ]; then
+            echo "ftb-server-installer not found. Please run install.sh first."
+            exit 1
+          fi
+          echo "ftb-server-installer exists."
+      - name: Clean up
+        run: rm -f ftb-server-installer
+      - name: Test PowersShell
+        shell: pwsh
+        run: ./install.ps1
+      - name: Validate Powershell output
+        run: |
+          if [ ! -f ftb-server-installer ]; then
+            echo "ftb-server-installer not found. Please run install.sh first."
+            exit 1
+          fi
+          echo "ftb-server-installer exists."
+      - name: Clean up
+        run: rm -f ftb-server-installer
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Create versio
+        run: echo "BINARY_VERSION=1.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+      - name: Release to github
+        run: |
+          gh release create "v$BINARY_VERSION" \
+            -t "v$BINARY_VERSION" \
+            --notes "Auto generated release for v$BINARY_VERSION" \
+            --generate-notes \
+            ./install.sh \
+            ./install.ps1

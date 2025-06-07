@@ -61,3 +61,5 @@ else
     echo "Neither curl nor wget is installed. Please install one of them to proceed."
     exit 1
 fi
+
+echo "Download complete. You can now run the installer with ./$outname"

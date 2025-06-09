@@ -63,4 +63,4 @@ jobs:
             --notes "Auto generated release for v$BINARY_VERSION" \
             --generate-notes \
             ./install.sh \
-            ./install.ps1
+            ./install.bat

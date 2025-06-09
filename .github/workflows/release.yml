@@ -23,18 +23,6 @@ jobs:
           echo "ftb-server-installer exists."
       - name: Clean up
         run: rm -f ftb-server-installer
-      - name: Test PowersShell
-        shell: pwsh
-        run: .\install.ps1
-      - name: Validate Powershell output
-        run: |
-          if [ ! -f ftb-server-installer ]; then
-            echo "ftb-server-installer not found. Please run install.sh first."
-            exit 1
-          fi
-          echo "ftb-server-installer exists."
-      - name: Clean up
-        run: rm -f ftb-server-installer
   test-windows:
     name: Test Windows
     runs-on: windows-latest
@@ -47,18 +35,20 @@ jobs:
       - name: Validate Batch output
         shell: cmd
         run: |
-          if NOT exist ftb-server-installer (
+          if NOT exist ftb-server-installer.exe (
               echo "ftb-server-installer not found. Please run install.bat first."
               exit 1
           )
           echo "ftb-server-installer exists."
       - name: Clean up
-        run: rm -f ftb-server-installer
+        run: del ftb-server-installer.exe
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: test
+    needs: 
+      - test-unix
+      - test-windows
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4

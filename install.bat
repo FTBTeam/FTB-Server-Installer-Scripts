@@ -10,21 +10,11 @@ IF "%packId%"=="" (
     echo %ESC%[31mMissing pack id, if you renamed this bat file undo your changes otherwise contact FTB%ESC%[0m
     exit /b 1
 )
-IF "%packId%"=="REPLACE_ME" (
-     echo %ESC%[31mInvalid pack id "%packVersion%", please contact FTB%ESC%[0m
-    exit /b 1
-)
+
 IF "%packVersion%"=="" (
     echo %ESC%[31mMissing pack version, if you renamed this bat file undo your changes otherwise contact FTB%ESC%[0m
     exit /b 1
 )
-IF "%packVersion%"=="REPLACE_ME" (
-    echo %ESC%[31mInvalid pack version "%packVersion%", please contact FTB%ESC%[0m
-    exit /b 1
-)
-
-echo PackId: %packId%
-echo PackVersion: %packVersion%
 
 reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE >nul 2>&1
 for /f "tokens=3" %%A in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE 2^>nul') do set "sysArch=%%A"
@@ -39,7 +29,16 @@ set "completeUrl=%downloadUrl%windows-%arch%.exe"
 
 echo Downloading FTB Server Installer from: %completeUrl%
 
-curl -L -o serverinstaller_%packId%_%packVersion%.exe %completeUrl%
+set "fileName=ftb-server-installer"
+
+IF NOT "%packId%"=="REPLACE_ME" (
+    set "fileName=%fileName%-%packId%"
+)
+IF NOT "%packVersion%"=="REPLACE_ME" (
+    set "fileName=%fileName%-%packVersion%"
+)
+
+curl -L -o %fileName%.exe %completeUrl%
 
 IF %ERRORLEVEL% NEQ 0 (
     echo %ESC%[31mFailed to download the file. Please check the URL or your internet connection.%ESC%[0m
@@ -47,5 +46,5 @@ IF %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-echo %ESC%[32mDownloaded FTB Server Installer to: %~dp0serverinstaller_%packId%_%packVersion%.exe%ESC%[0m
-echo %ESC%[36mYou can now run the installer using the command: .\serverinstaller_%packId%_%packVersion%.exe%ESC%[0m
+echo %ESC%[32mDownloaded FTB Server Installer to: %~dp0%fileName%.exe%ESC%[0m
+echo %ESC%[36mYou can now run the installer using the command: .\%fileName%.exe%ESC%[0m

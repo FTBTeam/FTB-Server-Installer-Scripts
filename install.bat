@@ -7,12 +7,12 @@ set "packVersion=REPLACE_ME"
 set "downloadUrl=https://github.com/FTBTeam/FTB-Server-Installer/releases/latest/download/ftb-server-"
 
 IF "%packId%"=="" (
-    echo %ESC%[31mMissing pack id, if you renamed this bat file undo your changes otherwise contact FTB%ESC%[0m
+    echo %ESC%[31mMissing pack id, please contact FTB%ESC%[0m
     exit /b 1
 )
 
 IF "%packVersion%"=="" (
-    echo %ESC%[31mMissing pack version, if you renamed this bat file undo your changes otherwise contact FTB%ESC%[0m
+    echo %ESC%[31mMissing pack version, please contact FTB%ESC%[0m
     exit /b 1
 )
 

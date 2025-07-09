@@ -39,7 +39,7 @@ echo "Version ID: $version_id"
 echo "Target Name: $target_name"
 
 download_url="${base_url}${target_name}-${arch_name}"
-outname="ftb-server-installer-${pack_id}-${version_id}"
+outname="ftb-server-installer_${pack_id}_${version_id}"
 
 # If the pack id or the version id are still set to the default values, we will use a generic name
 if [ "$pack_id" = "REPLACE_ME" ] || [ "$version_id" = "REPLACE_ME" ]; then

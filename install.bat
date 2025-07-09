@@ -32,10 +32,10 @@ echo Downloading FTB Server Installer from: %completeUrl%
 set "fileName=ftb-server-installer"
 
 IF NOT "%packId%"=="REPLACE_ME" (
-    set "fileName=%fileName%-%packId%"
+    set "fileName=%fileName%_%packId%"
 )
 IF NOT "%packVersion%"=="REPLACE_ME" (
-    set "fileName=%fileName%-%packVersion%"
+    set "fileName=%fileName%_%packVersion%"
 )
 
 curl -L -o %fileName%.exe %completeUrl%
